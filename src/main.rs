@@ -4,7 +4,7 @@ use std::time::Instant;
 
 fn main() {
     let start = Instant::now();
-    let result = day01::part1();
+    let result = day01::part2();
     let end = Instant::now();
 
     println!("Result: {}", result);

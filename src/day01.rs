@@ -1,8 +1,6 @@
 const INPUT: &str = include_str!("day01.txt");
-const DIGITS: [&str; 9] = [
-    "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
-];
 
+#[allow(dead_code)]
 pub fn part1() -> u32 {
     INPUT
         // Split into lines
@@ -18,7 +16,11 @@ pub fn part1() -> u32 {
         .sum()
 }
 
+#[allow(dead_code)]
 pub fn part2() -> u32 {
+    const DIGITS: [&str; 9] = [
+        "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
+    ];
     let digits_chars = DIGITS.map(|d| d.chars().collect::<Vec<_>>());
 
     let lines = INPUT

@@ -36,10 +36,7 @@ fn parse_input() -> Vec<(Vec<u32>, Vec<u32>)> {
 pub fn part1() -> usize {
     parse_input()
         .iter()
-        .map(|(rows, cols)| {
-            println!("{} {}", find_mirror(rows), find_mirror(cols));
-            100 * find_mirror(rows) + find_mirror(cols)
-        })
+        .map(|(rows, cols)| 100 * find_mirror(rows) + find_mirror(cols))
         .sum()
 }
 

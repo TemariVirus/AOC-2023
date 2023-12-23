@@ -93,7 +93,6 @@ fn lowest_loss(blocks: &[&[u8]], min_straight: u8, max_straight: u8) -> Option<u
     let target_x = (blocks[0].len() - 1) as u8;
     let target_y = (blocks.len() - 1) as u8;
 
-    let mut came_from = Array3D::new(blocks[0].len(), blocks.len(), 5, (0, 0, Direction::None));
     let mut g_scores = Array3D::new(blocks[0].len(), blocks.len(), 5, u16::MAX);
     g_scores.set(start_x, start_y, Direction::None as u8, 0);
 
@@ -141,7 +140,6 @@ fn lowest_loss(blocks: &[&[u8]], min_straight: u8, max_straight: u8) -> Option<u
 
                 if tentative_g_score < g_scores.get(next_x, next_y, next_d as u8) {
                     // Found better path
-                    came_from.set(next_x, next_y, next_d as u8, (x, y, d));
                     g_scores.set(next_x, next_y, next_d as u8, tentative_g_score);
 
                     open.push(Node {

@@ -1,10 +1,10 @@
-mod day22;
+mod day23;
 
 use std::time::Instant;
 
 fn main() {
     let start = Instant::now();
-    let result = day22::part2();
+    let result = day23::part2();
     let end = Instant::now();
 
     println!("Result: {}", result);

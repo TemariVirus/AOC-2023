@@ -1,4 +1,4 @@
-use std::collections::{BinaryHeap, HashMap, HashSet};
+use std::collections::{HashMap, HashSet};
 
 const INPUT: &str = include_str!("day23.txt");
 
@@ -92,59 +92,6 @@ fn compress_graph(map: &[Vec<bool>], start: (u8, u8), end: (u8, u8)) -> Vec<Edge
     edges
 }
 
-#[allow(dead_code)]
-pub fn part1() -> u16 {
-    let map = parse_input();
-    let start = (1, 0);
-    let end = (map[0].len() as u8 - 2, map.len() as u8 - 1);
-
-    let edges = compress_graph(&map, start, end);
-    longest_path_dag(&edges, start, end)
-}
-
-fn longest_path_dag(edges: &[Edge], start: (u8, u8), end: (u8, u8)) -> u16 {
-    // A* with negative weights
-    let h = |(x, y): (u8, u8)| (end.0 - x) as u16 + (end.1 - y) as u16;
-
-    let mut g_scores = HashMap::new();
-    g_scores.insert(start, 0);
-
-    let mut open = BinaryHeap::new();
-    open.push((h(start), start));
-
-    while let Some((_, (x, y))) = open.pop() {
-        if (x, y) == end {
-            return 0u16.wrapping_sub(g_scores[&(x, y)]);
-        }
-
-        let g_score = g_scores[&(x, y)];
-        for &(weight, from, to) in edges {
-            if from != (x, y) {
-                continue;
-            }
-
-            let g_score = g_score.wrapping_sub(weight);
-            if g_score < *g_scores.get(&to).unwrap_or(&u16::MAX) {
-                g_scores.insert(to, g_score);
-                let f_score = g_score.wrapping_add(h(to));
-                open.push((f_score, to));
-            }
-        }
-    }
-
-    panic!("No path found");
-}
-
-#[allow(dead_code)]
-pub fn part2() -> u16 {
-    let map = parse_input();
-    let start = (1, 0);
-    let end = (map[0].len() as u8 - 2, map.len() as u8 - 1);
-
-    let edges = compress_graph(&map, start, end);
-    longest_path(&edges, start, end)
-}
-
 fn longest_path(edges: &[Edge], start: (u8, u8), end: (u8, u8)) -> u16 {
     let mut vertices = HashMap::new();
     for &(_, from, to) in edges {
@@ -161,7 +108,7 @@ fn longest_path(edges: &[Edge], start: (u8, u8), end: (u8, u8)) -> u16 {
                 v,
                 edges
                     .iter()
-                    .filter(|&&(_, from, to)| from == k || to == k)
+                    .filter(|&&(_, from, _)| from == k)
                     .map(|&(weight, from, to)| {
                         (weight, vertices[&if from == k { to } else { from }])
                     })
@@ -195,4 +142,27 @@ fn longest_path(edges: &[Edge], start: (u8, u8), end: (u8, u8)) -> u16 {
     }
 
     max
+}
+
+#[allow(dead_code)]
+pub fn part1() -> u16 {
+    let map = parse_input();
+    let start = (1, 0);
+    let end = (map[0].len() as u8 - 2, map.len() as u8 - 1);
+
+    let edges = compress_graph(&map, start, end);
+    longest_path(&edges, start, end)
+}
+
+#[allow(dead_code)]
+pub fn part2() -> u16 {
+    let map = parse_input();
+    let start = (1, 0);
+    let end = (map[0].len() as u8 - 2, map.len() as u8 - 1);
+
+    let edges: Vec<_> = compress_graph(&map, start, end)
+        .iter()
+        .flat_map(|&(weight, from, to)| vec![(weight, from, to), (weight, to, from)])
+        .collect();
+    longest_path(&edges, start, end)
 }

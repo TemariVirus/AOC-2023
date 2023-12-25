@@ -51,7 +51,7 @@ pub fn part1() -> u16 {
     const MIN_COORD: f64 = 200000000000000.0;
     const MAX_COORD: f64 = 400000000000000.0;
 
-    let hailstones: Vec<_> = parse_input();
+    let hailstones = parse_input();
     hailstones
         .iter()
         .enumerate()
@@ -78,8 +78,8 @@ fn ray_intersect2(pos1: Coord3, vel1: Coord3, pos2: Coord3, vel2: Coord3) -> (f6
 
     let dx = pos2.x - pos1.x;
     let dy = pos2.y - pos1.y;
-    let u = dy * vel2.x - dx * vel2.y / det;
-    let v = dy * vel1.x - dx * vel1.y / det;
+    let u = (dy * vel2.x - dx * vel2.y) / det;
+    let v = (dy * vel1.x - dx * vel1.y) / det;
     if u < 0.0 || v < 0.0 {
         // Rays don't intersect
         return (f64::NAN, f64::NAN);

@@ -64,7 +64,6 @@ fn main() {
     time(17, 1, day17::part1);
     time(17, 2, day17::part2);
     time(18, 1, day18::part1);
-    time(18, 1, day18::part1);
     time(18, 2, day18::part2);
     time(19, 1, day19::part1);
     time(19, 2, day19::part2);

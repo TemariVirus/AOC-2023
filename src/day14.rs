@@ -89,17 +89,17 @@ fn spin_cycle(rocks: &mut Vec<Vec<Rock>>) {
 
     // West
     for i in 1..rocks[0].len() {
-        for y in 0..rocks.len() {
-            if rocks[y][i] != Rock::Round {
+        for row in rocks.iter_mut() {
+            if row[i] != Rock::Round {
                 continue;
             }
 
             let mut x = i;
-            while x > 0 && rocks[y][x - 1] == Rock::Empty {
+            while x > 0 && row[x - 1] == Rock::Empty {
                 x -= 1;
             }
-            rocks[y][i] = Rock::Empty;
-            rocks[y][x] = Rock::Round;
+            row[i] = Rock::Empty;
+            row[x] = Rock::Round;
         }
     }
 
